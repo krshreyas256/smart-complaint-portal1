@@ -1,12 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/Login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
@@ -20,47 +25,72 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        setMessage("Login successful!");
-        localStorage.setItem("token", data.token); // store token
+        setMessage("Login successful! Redirecting...");
+        localStorage.setItem("token", data.token);
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
       } else {
         setMessage(data.message || "Login failed");
       }
     } catch (error) {
       console.error("Login error:", error);
       setMessage("An error occurred while logging in.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Login</h2>
-      {message && <p>{message}</p>}
+    <div className="login-container">
+      <div className="login-wrapper">
+        <div className="login-card">
+          <h2 className="login-title">Welcome Back</h2>
+          <p className="login-subtitle">Login to access your account</p>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label>Email</label>
-          <input
-            type="email"
-            className="form-control"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          {message && (
+            <div className={`alert ${message.includes("success") ? "alert-success" : "alert-error"}`}>
+              {message}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="form-group">
+              <label htmlFor="email">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                className="form-control"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                className="form-control"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit" className="btn-login" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+
+          <p className="login-footer">
+            Don't have an account? <a href="/register">Register here</a>
+          </p>
         </div>
-
-        <div className="mb-3">
-          <label>Password</label>
-          <input
-            type="password"
-            className="form-control"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        <button type="submit" className="btn btn-success">Login</button>
-      </form>
+      </div>
     </div>
   );
 }

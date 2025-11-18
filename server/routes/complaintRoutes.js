@@ -1,24 +1,30 @@
 const express = require("express");
 const router = express.Router();
 
-const createComplaint = require("../controllers/complaintController").createComplaint;
-const getMyComplaints = require("../controllers/complaintController").getMyComplaints;
-const getAllComplaints = require("../controllers/complaintController").getAllComplaints;
-const updateStatus = require("../controllers/complaintController").updateStatus;
+const {
+  createComplaint,
+  getMyComplaints,
+  getDepartmentComplaints,
+  updateComplaint,
+  getAllComplaints,
+} = require("../controllers/complaintController");
 
-const protect = require("../middleware/authMiddleware"); // default import
-const admin = require("../middleware/adminMiddleware");   // default import
+const protect = require("../middleware/authMiddleware");
+const admin = require("../middleware/adminMiddleware");
 
 // User creates complaint
-router.post("/create", protect, createComplaint);
+router.post("/", protect, createComplaint);
 
 // User gets only their complaints
 router.get("/my-complaints", protect, getMyComplaints);
 
+// Admin gets complaints for their department
+router.get("/admin", protect, admin, getDepartmentComplaints);
+
 // Admin gets all complaints
 router.get("/all", protect, admin, getAllComplaints);
 
-// Admin updates complaint status
-router.put("/update/:id", protect, admin, updateStatus);
+// Admin updates complaint status and adds update
+router.put("/:id", protect, admin, updateComplaint);
 
 module.exports = router;
