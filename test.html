@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h3>Test API Request</h3>
+  <script>
+    fetch("http://localhost:5000/api/departments", {
+      headers: {
+        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjBmZDk4YWFjNGIyODRkYzYxYTIxYiIsInJvbGUiOiJjaXRpemVuIiwiaWF0IjoxNzYwNjI0MTE2LCJleHAiOjE3NjEyMjg5MTZ9.KjcLV9pLfpsjj5Cd-7tbfAfrwoJ4j8_eGfo8-uCrLx8"
+      }
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(err => console.error(err));
+  </script>
+</body>
+</html>
