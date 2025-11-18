@@ -20,32 +20,6 @@ const Home = () => {
           Register
         </Link>
       </div>
-
-      <div className="features-section">
-        <h2>Why Use Smart Complaint Portal?</h2>
-        <div className="features-grid">
-          <div className="feature-card">
-            <div className="feature-icon">📋</div>
-            <h3>Easy Filing</h3>
-            <p>File complaints with just a few clicks.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">📊</div>
-            <h3>Real-time Tracking</h3>
-            <p>Track your complaint status in real-time.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">⚡</div>
-            <h3>Fast Resolution</h3>
-            <p>Get quick and effective resolutions from officials.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">🔐</div>
-            <h3>Secure & Private</h3>
-            <p>Your data is safe and secure with us.</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

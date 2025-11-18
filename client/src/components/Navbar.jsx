@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/Navbar.css";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -16,6 +17,12 @@ const Navbar = () => {
     setIsLoggedIn(false);
     navigate("/");
   };
+
+  // Hide the navbar entirely on the entry page (root path)
+  const hidePaths = ["/", "/login", "/register"];
+  if (location && hidePaths.includes(location.pathname)) {
+    return null;
+  }
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
