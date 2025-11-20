@@ -45,3 +45,39 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// GET current user profile
+exports.getProfile = async (req, res) => {
+  try {
+    const userId = req.user && req.user.id;
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+    const User = require('../models/User');
+    const user = await User.findById(userId).select('-password');
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// DELETE current user account
+exports.deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user && req.user.id;
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+
+    // remove user's complaints as well
+    const Complaint = require('../models/Complaint');
+    await Complaint.deleteMany({ user: userId });
+
+    const UserModel = require('../models/User');
+    await UserModel.findByIdAndDelete(userId);
+
+    res.json({ success: true, message: 'Account deleted successfully' });
+  } catch (err) {
+    console.error('Delete account error:', err);
+    res.status(500).json({ message: 'Error deleting account' });
+  }
+};

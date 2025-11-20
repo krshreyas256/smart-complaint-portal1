@@ -194,26 +194,16 @@ function ComplaintForm() {
 
             <div className="form-group form-col-6">
               <label htmlFor="district">District *</label>
-              <select
+              <input
+                type="text"
                 id="district"
                 name="district"
                 className="form-control"
+                placeholder="Enter district (you can type freely)"
                 value={formData.district}
                 onChange={handleChange}
                 required
-                disabled={!formData.state}
-              >
-                <option value="">Select District</option>
-                {formData.state && districts[formData.state] ? (
-                  districts[formData.state].map((district) => (
-                    <option key={district} value={district}>
-                      {district}
-                    </option>
-                  ))
-                ) : (
-                  <option disabled>Please select a state first</option>
-                )}
-              </select>
+              />
             </div>
           </div>
 

@@ -6,7 +6,9 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import AdminPanel from "./pages/AdminPanel";
+import AdminDashboard from "./pages/AdminDashboard";
 import "./App.css";
 import ComplaintForm from "./pages/ComplaintForm";
 
@@ -21,7 +23,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/complaint" element={<ComplaintForm />} />
           <Route path="/login" element={<Login />} />
 

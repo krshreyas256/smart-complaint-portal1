@@ -4,13 +4,32 @@ import "../styles/Navbar.css";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
-  }, []);
+
+    // Fetch user role if logged in
+    if (token) {
+      const fetchUserRole = async () => {
+        try {
+          const res = await fetch("http://localhost:5000/api/auth/me", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await res.json();
+          if (res.ok) {
+            setUserRole(data.user.role);
+          }
+        } catch (err) {
+          console.error("Error fetching user role:", err);
+        }
+      };
+      fetchUserRole();
+    }
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -27,7 +46,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
-        <Link className="navbar-brand" to="/">
+        <Link className="navbar-brand" to="/profile">
           Smart Complaint Portal
         </Link>
         <button
@@ -40,14 +59,33 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link" to="/">
-                Home
-              </Link>
-            </li>
-
-            {isLoggedIn && (
+            {isLoggedIn && userRole === "admin" && (
               <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">
+                    My Profile
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/admin-dashboard">
+                    Dashboard
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <button className="nav-link btn-logout" onClick={handleLogout}>
+                    Logout
+                  </button>
+                </li>
+              </>
+            )}
+
+            {isLoggedIn && userRole === "user" && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">
+                    My Profile
+                  </Link>
+                </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/dashboard">
                     Dashboard
@@ -56,11 +94,6 @@ const Navbar = () => {
                 <li className="nav-item">
                   <Link className="nav-link" to="/complaint">
                     File Complaint
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/admin">
-                    Admin Panel
                   </Link>
                 </li>
                 <li className="nav-item">
