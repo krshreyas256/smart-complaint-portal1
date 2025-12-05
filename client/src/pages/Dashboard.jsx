@@ -91,63 +91,47 @@ const Dashboard = () => {
         <div className="complaints-grid">
           {complaints.map((complaint) => (
             <div key={complaint._id} className="complaint-card">
-              <div className="card-header">
-                <h3>{complaint.title}</h3>
-                <span className={`status-badge ${getStatusColor(complaint.status)}`}>
-                  {getStatusIcon(complaint.status)} {complaint.status}
-                </span>
-              </div>
-
-              <div className="card-body">
-                <div className="card-content">
-                  <div className="card-content-left">
-                    <p className="description">{complaint.description}</p>
-
-                    <div className="details-grid">
-                      <div className="detail-item">
-                        <label>State</label>
-                        <span>{complaint.state}</span>
-                      </div>
-                      <div className="detail-item">
-                        <label>District</label>
-                        <span>{complaint.district}</span>
-                      </div>
-                      <div className="detail-item">
-                        <label>Department</label>
-                        <span>{complaint.department}</span>
-                      </div>
-                      <div className="detail-item">
-                        <label>Filed On</label>
-                        <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
-                      </div>
-                    </div>
-
-                    {complaint.adminUpdate && (
-                      <div className="admin-update">
-                        <h4>Latest Update from Admin:</h4>
-                        <p>{complaint.adminUpdate}</p>
-                        <small>Updated on {new Date(complaint.updatedAt).toLocaleDateString()}</small>
-                      </div>
-                    )}
-                  </div>
-
-                  {complaint.imageUrl && (
-                    <div className="card-content-right">
-                      <div className="image-container">
-                        <img
-                          className="complaint-image"
-                          src={
-                            complaint.imageUrl.startsWith('http')
-                              ? complaint.imageUrl
-                              : `http://localhost:5000${complaint.imageUrl}`
-                          }
-                          alt="Complaint"
-                        />
-                      </div>
-                    </div>
-                  )}
+              {/* Left column: Title, status, and details */}
+              <div className="complaint-left">
+                <div className="complaint-header">
+                  <h4>{complaint.title}</h4>
+                  <span className={`status-badge status-${complaint.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                    {complaint.status}
+                  </span>
                 </div>
+
+                <div className="complaint-details">
+                  <p><strong>Description:</strong> {complaint.description}</p>
+                  <p><strong>State:</strong> {complaint.state}</p>
+                  <p><strong>District:</strong> {complaint.district}</p>
+                  <p><strong>Department:</strong> {complaint.department}</p>
+                  <p><strong>Filed:</strong> {new Date(complaint.createdAt).toLocaleDateString()}</p>
+                </div>
+
+                {complaint.adminUpdate && (
+                  <div className="admin-update">
+                    <h4>Latest Update from Admin:</h4>
+                    <p>{complaint.adminUpdate}</p>
+                    <small>Updated on {new Date(complaint.updatedAt).toLocaleDateString()}</small>
+                  </div>
+                )}
               </div>
+
+              {/* Right column: Image */}
+              {complaint.imageUrl && (
+                <div className="complaint-right">
+                  <div className="complaint-image-wrapper">
+                    <img
+                      src={
+                        complaint.imageUrl.startsWith('http')
+                          ? complaint.imageUrl
+                          : `http://localhost:5000${complaint.imageUrl}`
+                      }
+                      alt="Complaint"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
