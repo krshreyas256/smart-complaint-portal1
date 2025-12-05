@@ -1,6 +1,6 @@
 .register-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,7 +12,7 @@
 }
 
 .register-card {
-  background: white;
+  background: var(--card);
   padding: 50px;
   border-radius: 15px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -22,17 +22,17 @@
 
 .register-title {
   text-align: center;
-  color: #333;
-  font-size: 2rem;
+  color: var(--text);
+  font-size: 1.75rem;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .register-subtitle {
   text-align: center;
-  color: #999;
+  color: var(--muted);
   font-size: 0.95rem;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .alert {
@@ -67,14 +67,14 @@
 
 .form-group label {
   margin-bottom: 8px;
-  color: #333;
+  color: var(--text);
   font-weight: 600;
   font-size: 0.95rem;
 }
 
 .form-control {
   padding: 12px 15px;
-  border: 2px solid #e0e0e0;
+  border: 1px solid rgba(0,0,0,0.08);
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -83,17 +83,17 @@
 
 .form-control:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .form-control:hover {
-  border-color: #c0c0c0;
+  border-color: rgba(0,0,0,0.12);
 }
 
 .btn-register {
   padding: 14px 28px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -106,7 +106,7 @@
 
 .btn-register:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.18);
 }
 
 .btn-register:disabled {
@@ -116,20 +116,20 @@
 
 .register-footer {
   text-align: center;
-  color: #666;
+  color: var(--muted);
   font-size: 0.95rem;
   margin-top: 20px;
 }
 
 .register-footer a {
-  color: #667eea;
+  color: var(--primary);
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s ease;
 }
 
 .register-footer a:hover {
-  color: #764ba2;
+  opacity: 0.95;
   text-decoration: underline;
 }
 

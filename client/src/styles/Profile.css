@@ -1,9 +1,9 @@
-.profile-container { display:flex; justify-content:center; padding:2rem; }
-.profile-card { background: #fff; padding:2rem; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.08); width:100%; max-width:600px; }
-.profile-details p { margin:0.5rem 0; }
+.profile-container { display:flex; justify-content:center; padding:2rem; background: var(--bg); }
+.profile-card { background: var(--card); padding:1.75rem; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,0.06); width:100%; max-width:640px; }
+.profile-details p { margin:0.5rem 0; color: var(--text); }
 
 .btn-delete {
-	background: #e53935;
+	background: var(--danger);
 	color: white;
 	border: none;
 	padding: 0.6rem 1rem;

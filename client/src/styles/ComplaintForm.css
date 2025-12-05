@@ -1,17 +1,18 @@
 .complaint-form-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 40px 20px;
+  background: var(--bg);
+  padding: 32px 16px;
 }
 
 .form-wrapper {
-  max-width: 700px;
+  max-width: 720px;
+  width: 100%;
   margin: 0 auto;
-  background: white;
-  padding: 40px;
+  background: var(--card);
+  padding: 28px;
   border-radius: 10px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  animation: slideUp 0.5s ease-in-out;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  animation: slideUp 0.45s ease-in-out;
 }
 
 @keyframes slideUp {
@@ -27,9 +28,9 @@
 
 .form-title {
   text-align: center;
-  color: #333;
-  font-size: 2rem;
-  margin-bottom: 30px;
+  color: var(--text);
+  font-size: 1.85rem;
+  margin-bottom: 22px;
   font-weight: 700;
 }
 
@@ -46,28 +47,30 @@
 
 .form-group label {
   margin-bottom: 8px;
-  color: #333;
+  color: var(--text);
   font-weight: 600;
   font-size: 0.95rem;
 }
 
 .form-control {
   padding: 12px 15px;
-  border: 2px solid #e0e0e0;
+  border: 1px solid rgba(0,0,0,0.08);
   border-radius: 6px;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   font-family: inherit;
+  background: transparent;
+  color: var(--text);
 }
 
 .form-control:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.08);
 }
 
 .form-control:hover {
-  border-color: #c0c0c0;
+  border-color: rgba(0,0,0,0.12);
 }
 
 textarea.form-control {
@@ -105,21 +108,21 @@ textarea.form-control {
 }
 
 .btn-submit {
-  padding: 14px 28px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 12px 22px;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 6px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   margin-top: 10px;
 }
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.18);
 }
 
 .btn-submit:disabled {
@@ -128,7 +131,7 @@ textarea.form-control {
 }
 
 .text-muted {
-  color: #999;
+  color: var(--muted);
   font-size: 0.85rem;
   display: block;
   margin-top: 5px;

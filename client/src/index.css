@@ -11,3 +11,50 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --bg: #ffffff;
+  --text: #222222;
+  --muted: #666666;
+  --card: #ffffff;
+  --primary: #1976d2;
+  --accent: #667eea;
+  --danger: #e53935;
+}
+
+.dark-theme {
+  --bg: #0f1724;
+  --text: #e6eef8;
+  --muted: #9fb0c8;
+  --card: #0b1220;
+  --primary: #4dabf7;
+  --accent: #9aaefc;
+  --danger: #ef6b6b;
+}
+
+html, body, #root {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Smooth theme transitions */
+html, body, #root, .container, .card, .complaint-card, .form-wrapper, .register-card {
+  transition: background-color 0.24s ease, color 0.24s ease, border-color 0.18s ease;
+}
+
+/* Responsive typography */
+html { font-size: 16px; }
+@media (max-width: 1200px) { html { font-size: 15px; } }
+@media (max-width: 900px) { html { font-size: 14px; } }
+@media (max-width: 600px) { html { font-size: 13px; } }
+
+/* Utility container */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+
+/* Make images responsive by default */
+img { max-width: 100%; height: auto; }
+
+/* Improve form inputs for touch devices */
+input, select, textarea, button { font-family: inherit; }
+

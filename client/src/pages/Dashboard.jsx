@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/Dashboard.css";
+import "../styles/Dashboard.improved.css";
 
 const Dashboard = () => {
   const [complaints, setComplaints] = useState([]);
@@ -99,40 +99,54 @@ const Dashboard = () => {
               </div>
 
               <div className="card-body">
-                <p className="description">{complaint.description}</p>
+                <div className="card-content">
+                  <div className="card-content-left">
+                    <p className="description">{complaint.description}</p>
 
-                <div className="details-grid">
-                  <div className="detail-item">
-                    <label>State</label>
-                    <span>{complaint.state}</span>
+                    <div className="details-grid">
+                      <div className="detail-item">
+                        <label>State</label>
+                        <span>{complaint.state}</span>
+                      </div>
+                      <div className="detail-item">
+                        <label>District</label>
+                        <span>{complaint.district}</span>
+                      </div>
+                      <div className="detail-item">
+                        <label>Department</label>
+                        <span>{complaint.department}</span>
+                      </div>
+                      <div className="detail-item">
+                        <label>Filed On</label>
+                        <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+
+                    {complaint.adminUpdate && (
+                      <div className="admin-update">
+                        <h4>Latest Update from Admin:</h4>
+                        <p>{complaint.adminUpdate}</p>
+                        <small>Updated on {new Date(complaint.updatedAt).toLocaleDateString()}</small>
+                      </div>
+                    )}
                   </div>
-                  <div className="detail-item">
-                    <label>District</label>
-                    <span>{complaint.district}</span>
-                  </div>
-                  <div className="detail-item">
-                    <label>Department</label>
-                    <span>{complaint.department}</span>
-                  </div>
-                  <div className="detail-item">
-                    <label>Filed On</label>
-                    <span>{new Date(complaint.createdAt).toLocaleDateString()}</span>
-                  </div>
+
+                  {complaint.imageUrl && (
+                    <div className="card-content-right">
+                      <div className="image-container">
+                        <img
+                          className="complaint-image"
+                          src={
+                            complaint.imageUrl.startsWith('http')
+                              ? complaint.imageUrl
+                              : `http://localhost:5000${complaint.imageUrl}`
+                          }
+                          alt="Complaint"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
-
-                {complaint.imageUrl && (
-                  <div className="image-container">
-                    <img src={complaint.imageUrl} alt="Complaint" />
-                  </div>
-                )}
-
-                {complaint.adminUpdate && (
-                  <div className="admin-update">
-                    <h4>Latest Update from Admin:</h4>
-                    <p>{complaint.adminUpdate}</p>
-                    <small>Updated on {new Date(complaint.updatedAt).toLocaleDateString()}</small>
-                  </div>
-                )}
               </div>
             </div>
           ))}

@@ -5,6 +5,9 @@ import "../styles/Navbar.css";
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState(null);
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || "light"
+  );
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -31,6 +34,12 @@ const Navbar = () => {
     }
   }, [location]);
 
+  useEffect(() => {
+    const isDark = theme === "dark";
+    document.documentElement.classList.toggle("dark-theme", isDark);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
@@ -43,8 +52,10 @@ const Navbar = () => {
     return null;
   }
 
+  const toggleTheme = () => setTheme((t) => (t === "light" ? "dark" : "light"));
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg">
       <div className="container">
         <Link className="navbar-brand" to="/profile">
           Smart Complaint Portal
@@ -76,6 +87,15 @@ const Navbar = () => {
                     Logout
                   </button>
                 </li>
+                <li className="nav-item">
+                  <button
+                    className="nav-link theme-toggle"
+                    onClick={toggleTheme}
+                    aria-label="Toggle theme"
+                  >
+                    {theme === "light" ? "🌙" : "☀️"}
+                  </button>
+                </li>
               </>
             )}
 
@@ -99,6 +119,15 @@ const Navbar = () => {
                 <li className="nav-item">
                   <button className="nav-link btn-logout" onClick={handleLogout}>
                     Logout
+                  </button>
+                </li>
+                <li className="nav-item">
+                  <button
+                    className="nav-link theme-toggle"
+                    onClick={toggleTheme}
+                    aria-label="Toggle theme"
+                  >
+                    {theme === "light" ? "🌙" : "☀️"}
                   </button>
                 </li>
               </>
