@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Chatbot from "../components/Chatbot";
 import "../styles/Profile.css";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
+  const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -38,7 +40,24 @@ const Profile = () => {
       }
     };
 
+    const fetchComplaints = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/complaints/my-complaints", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setComplaints(data);
+        }
+      } catch (err) {
+        console.error("Error fetching complaints:", err);
+      }
+    };
+
     fetchProfile();
+    fetchComplaints();
   }, [navigate]);
 
   if (loading) return <div className="profile-container">Loading...</div>;
@@ -89,6 +108,9 @@ const Profile = () => {
           <p>User information not available.</p>
         )}
       </div>
+
+      {/* Chatbot Section - Only for non-admin users */}
+      {user && user.role !== 'admin' && <Chatbot userEmail={user.email} userComplaints={complaints} />}
     </div>
   );
 };
