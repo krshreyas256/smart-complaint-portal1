@@ -42,29 +42,34 @@ const Dashboard = () => {
     }
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Resolved":
-        return "status-resolved";
-      case "In Progress":
-        return "status-progress";
-      case "Pending":
-        return "status-pending";
-      default:
-        return "status-pending";
-    }
-  };
+  const handleDeleteComplaint = async (complaintId, complaintTitle) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete the complaint "${complaintTitle}"? This action cannot be undone.`
+    );
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case "Resolved":
-        return "✓";
-      case "In Progress":
-        return "⏳";
-      case "Pending":
-        return "⏱";
-      default:
-        return "•";
+    if (!confirmed) return;
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/complaints/${complaintId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Remove complaint from state
+        setComplaints((prev) => prev.filter((c) => c._id !== complaintId));
+      } else {
+        setError(data.message || "Failed to delete complaint");
+      }
+    } catch (err) {
+      console.error("Error deleting complaint:", err);
+      setError("An error occurred while deleting the complaint. Please try again.");
     }
   };
 
@@ -115,6 +120,14 @@ const Dashboard = () => {
                     <small>Updated on {new Date(complaint.updatedAt).toLocaleDateString()}</small>
                   </div>
                 )}
+
+                <button 
+                  className="btn-delete-complaint"
+                  onClick={() => handleDeleteComplaint(complaint._id, complaint.title)}
+                  title="Delete this complaint"
+                >
+                  🗑️ Delete
+                </button>
               </div>
 
               {/* Right column: Image */}

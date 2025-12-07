@@ -7,7 +7,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [updating, setUpdating] = useState(null);
-  const [activeSection, setActiveSection] = useState("new");
+  const [activeSection, setActiveSection] = useState("analytics");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -157,6 +157,12 @@ const AdminDashboard = () => {
       {/* Sub-navbar for sections */}
       <nav className="admin-sub-navbar">
         <button
+          className={`nav-tab ${activeSection === "analytics" ? "active" : ""}`}
+          onClick={() => setActiveSection("analytics")}
+        >
+          📊 Analytics
+        </button>
+        <button
           className={`nav-tab ${activeSection === "new" ? "active" : ""}`}
           onClick={() => setActiveSection("new")}
         >
@@ -184,6 +190,151 @@ const AdminDashboard = () => {
 
       {/* Section Content */}
       <div className="section-content">
+        {activeSection === "analytics" && (
+          <div className="analytics-wrapper">
+            {/* Key Metrics */}
+            <div className="metrics-grid">
+              <div className="metric-card metric-total">
+                <h3>{complaints.length}</h3>
+                <p>Total Complaints</p>
+              </div>
+              <div className="metric-card metric-pending">
+                <h3>{newComplaints.length + pendingComplaints.length}</h3>
+                <p>Pending</p>
+              </div>
+              <div className="metric-card metric-progress">
+                <h3>{ongoingComplaints.length}</h3>
+                <p>In Progress</p>
+              </div>
+              <div className="metric-card metric-resolved">
+                <h3>{resolvedComplaints.length}</h3>
+                <p>Resolved</p>
+              </div>
+            </div>
+
+            {/* Status Distribution Chart */}
+            <div className="chart-container">
+              <h4>Complaint Status Distribution</h4>
+              <div className="bar-chart">
+                <div className="bar-item">
+                  <div className="bar-label">New</div>
+                  <div className="bar-wrapper">
+                    <div 
+                      className="bar pending-bar" 
+                      style={{ width: `${complaints.length > 0 ? (newComplaints.length / complaints.length) * 100 : 0}%` }}
+                    >
+                      <span className="bar-value">{newComplaints.length}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="bar-item">
+                  <div className="bar-label">Pending</div>
+                  <div className="bar-wrapper">
+                    <div 
+                      className="bar pending-bar" 
+                      style={{ width: `${complaints.length > 0 ? (pendingComplaints.length / complaints.length) * 100 : 0}%` }}
+                    >
+                      <span className="bar-value">{pendingComplaints.length}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="bar-item">
+                  <div className="bar-label">Ongoing</div>
+                  <div className="bar-wrapper">
+                    <div 
+                      className="bar progress-bar" 
+                      style={{ width: `${complaints.length > 0 ? (ongoingComplaints.length / complaints.length) * 100 : 0}%` }}
+                    >
+                      <span className="bar-value">{ongoingComplaints.length}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="bar-item">
+                  <div className="bar-label">Resolved</div>
+                  <div className="bar-wrapper">
+                    <div 
+                      className="bar resolved-bar" 
+                      style={{ width: `${complaints.length > 0 ? (resolvedComplaints.length / complaints.length) * 100 : 0}%` }}
+                    >
+                      <span className="bar-value">{resolvedComplaints.length}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Department Distribution */}
+            <div className="chart-container">
+              <h4>Complaints by Department</h4>
+              <div className="department-stats">
+                {(() => {
+                  const deptMap = complaints.reduce((acc, c) => {
+                    acc[c.department] = (acc[c.department] || 0) + 1;
+                    return acc;
+                  }, {});
+                  const maxCount = Math.max(...Object.values(deptMap), 1);
+                  return Object.entries(deptMap).map(([dept, count]) => (
+                    <div key={dept} className="dept-item">
+                      <div className="dept-label">{dept}</div>
+                      <div className="dept-bar-wrapper">
+                        <div 
+                          className="dept-bar" 
+                          style={{ width: `${(count / maxCount) * 100}%` }}
+                        >
+                          <span className="dept-value">{count}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ));
+                })()}
+              </div>
+            </div>
+
+            {/* Resolution Rate & Stats */}
+            <div className="stats-container">
+              <div className="stat-box">
+                <h4>Resolution Rate</h4>
+                <div className="progress-circle">
+                  <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" className="progress-bg" />
+                    <circle 
+                      cx="50" 
+                      cy="50" 
+                      r="45" 
+                      className="progress-fill"
+                      style={{
+                        strokeDasharray: `${complaints.length > 0 ? (resolvedComplaints.length / complaints.length) * 283 : 0} 283`
+                      }}
+                    />
+                  </svg>
+                  <div className="progress-text">
+                    <span className="percentage">{complaints.length > 0 ? Math.round((resolvedComplaints.length / complaints.length) * 100) : 0}%</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="stat-box">
+                <h4>Average Resolution Time</h4>
+                <div className="stat-value">
+                  {resolvedComplaints.length > 0 
+                    ? Math.round(
+                        resolvedComplaints.reduce((acc, c) => {
+                          return acc + (new Date(c.updatedAt) - new Date(c.createdAt));
+                        }, 0) / resolvedComplaints.length / (1000 * 60 * 60 * 24)
+                      ) 
+                    : 0} days
+                </div>
+              </div>
+
+              <div className="stat-box">
+                <h4>Pending Complaints</h4>
+                <div className="stat-value alert-value">{newComplaints.length + pendingComplaints.length}</div>
+                <p className="stat-note">Awaiting action</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {activeSection === "new" && (
           <div className="complaints-wrapper">
             {newComplaints.length === 0 ? (

@@ -264,6 +264,38 @@
   font-size: 0.8rem;
 }
 
+/* Delete Button */
+.btn-delete-complaint {
+  margin-top: 1rem;
+  padding: 0.65rem 1.2rem;
+  background: #ff5252;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+  box-shadow: 0 2px 6px rgba(255, 82, 82, 0.2);
+}
+
+.btn-delete-complaint:hover {
+  background: #ff1744;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+}
+
+.btn-delete-complaint:active {
+  transform: translateY(0);
+}
+
+.btn-delete-complaint:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* Responsive Design */
 
 

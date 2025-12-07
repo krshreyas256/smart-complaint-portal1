@@ -1,4 +1,6 @@
 const Complaint = require("../models/Complaint");
+const fs = require("fs");
+const path = require("path");
 
 // Create complaint (User)
 exports.createComplaint = async (req, res) => {
@@ -107,5 +109,44 @@ exports.getAllComplaints = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Error fetching complaints" });
+  }
+};
+
+// User deletes their own complaint
+exports.deleteComplaint = async (req, res) => {
+  try {
+    const complaint = await Complaint.findById(req.params.id);
+
+    if (!complaint) {
+      return res.status(404).json({ message: "Complaint not found" });
+    }
+
+    // Check if user owns the complaint or is admin
+    const complaintUserId = complaint.user.toString();
+    const currentUserId = req.user.id.toString();
+    
+    if (complaintUserId !== currentUserId && req.user.role !== "admin") {
+      return res.status(403).json({ message: "You can only delete your own complaints" });
+    }
+
+    // Delete associated image file if it exists
+    if (complaint.imageUrl) {
+      const imagePath = path.join(__dirname, "..", "uploads", path.basename(complaint.imageUrl));
+      if (fs.existsSync(imagePath)) {
+        try {
+          fs.unlinkSync(imagePath);
+        } catch (fileErr) {
+          console.warn("Warning: Could not delete image file:", fileErr.message);
+        }
+      }
+    }
+
+    // Delete the complaint from database
+    await Complaint.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "Complaint deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting complaint:", err);
+    res.status(500).json({ message: "Error deleting complaint: " + err.message });
   }
 };
